@@ -4,13 +4,32 @@ services:
     container_name: sendme-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: future_letters
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - '5432:5432'
+      POSTGRES_DB: ${DB_NAME:-future_letters}
+      POSTGRES_USER: ${DB_USER:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     volumes:
       - sendme_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-postgres}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: sendme-api
+    restart: unless-stopped
+    ports:
+      - '3001:3001'
+    env_file:
+      - apps/api/.env
+    environment:
+      DB_HOST: postgres
+    depends_on:
+      postgres:
+        condition: service_healthy
 
 volumes:
   sendme_pgdata:
