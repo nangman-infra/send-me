@@ -6,6 +6,10 @@ on:
       - dev
     paths:
       - 'apps/web/**'
+      - 'pnpm-workspace.yaml'
+      - 'pnpm-lock.yaml'
+      - '.npmrc'
+  workflow_dispatch:
 
 permissions:
   id-token: write
