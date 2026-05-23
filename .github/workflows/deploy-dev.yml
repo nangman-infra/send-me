@@ -1,0 +1,68 @@
+name: Deploy Web (dev)
+
+on:
+  push:
+    branches:
+      - dev
+    paths:
+      - 'apps/web/**'
+
+permissions:
+  id-token: write
+  contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  S3_BUCKET: dev-sendme-junoshon-cloud
+  CF_DISTRIBUTION_ID: E2ZMCT8KMK5CTG
+  AWS_ROLE_ARN: arn:aws:iam::886375649570:role/github-actions-dev-sendme
+
+jobs:
+  deploy:
+    name: Build & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build web
+        working-directory: apps/web
+        env:
+          VITE_API_URL: ${{ secrets.VITE_API_URL }}
+        run: pnpm build
+
+      - name: Configure AWS credentials (OIDC)
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Sync to S3
+        run: |
+          aws s3 sync apps/web/dist s3://${{ env.S3_BUCKET }} \
+            --delete \
+            --cache-control "public,max-age=31536000,immutable" \
+            --exclude "index.html"
+          aws s3 cp apps/web/dist/index.html s3://${{ env.S3_BUCKET }}/index.html \
+            --cache-control "no-cache,no-store,must-revalidate"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id ${{ env.CF_DISTRIBUTION_ID }} \
+            --paths "/*"

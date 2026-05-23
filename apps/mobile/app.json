@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "sendme",
+    "slug": "sendme",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#F2EDE4",
+    "ios": {
+      "supportsTablet": false,
+      "bundleIdentifier": "com.sendme.app"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#F2EDE4"
+      },
+      "package": "com.sendme.app"
+    },
+    "plugins": [
+      "react-native-webview"
+    ]
+  }
+}

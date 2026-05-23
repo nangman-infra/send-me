@@ -1,0 +1,19 @@
+{
+  "name": "sendme",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:api": "pnpm --filter api dev",
+    "build:web": "pnpm --filter web build",
+    "build:api": "pnpm --filter api build",
+    "audit": "pnpm audit",
+    "outdated": "pnpm outdated"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": ["@nestjs/core", "unrs-resolver"]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "sendme-mobile",
+  "version": "1.0.0",
+  "main": "App.tsx",
+  "scripts": {
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios"
+  },
+  "dependencies": {
+    "expo": "~56.0.3",
+    "expo-status-bar": "~56.0.4",
+    "react": "19.2.6",
+    "react-native": "0.85.3",
+    "react-native-webview": "13.16.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.25.0",
+    "@types/react": "~19.2.0",
+    "typescript": "^5.3.3"
+  }
+}
