@@ -8,13 +8,16 @@
     "backgroundColor": "#F2EDE4",
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.sendme.app"
+      "bundleIdentifier": "cloud.junoshon.sendme",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#F2EDE4"
       },
-      "package": "com.sendme.app"
+      "package": "cloud.junoshon.sendme"
     },
     "plugins": [],
     "extra": {
