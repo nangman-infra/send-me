@@ -16,8 +16,11 @@
       },
       "package": "com.sendme.app"
     },
-    "plugins": [
-      "react-native-webview"
-    ]
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "998d7f01-6eee-49b5-9af5-be1866d5c8df"
+      }
+    }
   }
 }
