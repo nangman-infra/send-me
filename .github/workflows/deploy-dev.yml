@@ -42,7 +42,9 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          pnpm config set minimum-release-age 0 --global
+          pnpm install --frozen-lockfile
 
       - name: Build web
         working-directory: apps/web
