@@ -1,16 +1,16 @@
 import { useRef, useState, useEffect } from 'react';
-import { BackHandler, SafeAreaView, StyleSheet } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { BackHandler, View, StyleSheet, Platform } from 'react-native';
 import { WebView } from 'react-native-webview';
 import type { WebView as WebViewRef } from 'react-native-webview';
 
-const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'http://localhost:5173';
+const WEB_URL = process.env.EXPO_PUBLIC_WEB_URL ?? 'https://dev.sendme.junoshon.cloud';
 
 export default function App() {
   const webViewRef = useRef<WebViewRef>(null);
   const [canGoBack, setCanGoBack] = useState(false);
 
   useEffect(() => {
+    if (Platform.OS !== 'android') return;
     const subscription = BackHandler.addEventListener('hardwareBackPress', () => {
       if (canGoBack && webViewRef.current) {
         webViewRef.current.goBack();
@@ -22,15 +22,14 @@ export default function App() {
   }, [canGoBack]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <StatusBar style="dark" backgroundColor="#F2EDE4" />
+    <View style={styles.container}>
       <WebView
         ref={webViewRef}
         source={{ uri: WEB_URL }}
         style={styles.webview}
         onNavigationStateChange={(state) => setCanGoBack(state.canGoBack)}
       />
-    </SafeAreaView>
+    </View>
   );
 }
 
